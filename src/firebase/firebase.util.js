@@ -13,10 +13,12 @@ const firebaseConfig = {
   measurementId: "G-TC0203ZNT3",
 };
 
-firebase.initializeApp(firebaseConfig);
+const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 export const auth = firebase.auth();
 
 var provider = new firebase.auth.GoogleAuthProvider();
 
 export const signInWithGoogle = () => auth.signInWithPopup(provider);
+
+export const db = firebaseApp.firestore();
