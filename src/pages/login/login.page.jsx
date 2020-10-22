@@ -8,11 +8,6 @@ firebase.initializeApp(firebaseConfig);
 
 var provider = new firebase.auth.GoogleAuthProvider();
 
-const LoginPage = () => (
-  <div>
-    <button onClick={onLoginClick}>Sign In With Google</button>
-  </div>
-);
 const onLoginClick = () => {
   firebase
     .auth()
@@ -36,5 +31,11 @@ const onLoginClick = () => {
       // ...
     });
 };
+
+const LoginPage = () => (
+  <div>
+    <button onClick={onLoginClick}>Sign In With Google</button>
+  </div>
+);
 
 export default LoginPage;
