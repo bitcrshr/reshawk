@@ -1,35 +1,23 @@
 # Welcome to reshawk 👋
-![Version](https://img.shields.io/badge/version-0.1.0-blue.svg?cacheSeconds=2592000)
-
 > A web solution for college students in residence halls.
 
-## Install
+## Get Up and Running
+
+First things first, clone the repository:
 
 ```sh
-npm install
+git clone https://github.com/photonfighterlabs/reshawk.git
 ```
 
-## Usage
+Then, navigate to `reshawk` and install all the dependencies (this may take a while):
 
 ```sh
-npm run start
+npm i
 ```
 
-## Run tests
+Finally, to start the development server, run:
 
 ```sh
-npm run test
+npm start
 ```
 
-## Author
-
-👤 **Photon Fighter Labs**
-
-
-## Show your support
-
-Give a ⭐️ if this project helped you!
-
-
-***
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
