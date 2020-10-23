@@ -3,14 +3,13 @@ import "./App.css";
 
 import LoginPage from "./pages/login/login.page";
 
-import { ProvideAuth } from './firebase/firebase.util';
+import { useAuth } from "./firebase/firebase.util";
+import InviteLinkPage from "./pages/invite-link/invite-link.page";
 
 function App() {
-  return (
-    <ProvideAuth>
-      <LoginPage></LoginPage>
-    </ProvideAuth>
-  );
+  const auth = useAuth();
+
+  return !auth.user ? <LoginPage /> : <InviteLinkPage />;
 }
 
 export default App;

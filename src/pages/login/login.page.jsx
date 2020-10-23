@@ -12,16 +12,12 @@ const LoginPage = () => {
   console.log(`Current User Email: ${auth.user?.email}`);
   console.log(`Authorized User? ${auth.authorized}`);
 
-  return !auth.user ? (
+  return (
     <PageContainer>
       <LoginContainer>
         <GoogleSignInButton type="light" onClick={auth.signInWithGoogle} />
       </LoginContainer>
     </PageContainer>
-  ) : (
-    <div>
-      <button onClick={auth.signOut}>sign out</button>
-    </div>
   );
 };
 

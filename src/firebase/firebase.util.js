@@ -48,7 +48,7 @@ function useProvideAuth() {
   // Wrap any Firebase methods we want to use making sure ...
   // ... to save the user to state.
   const signInWithGoogle = () => {
-    auth.signInWithPopup(provider).then((response) => {
+    return auth.signInWithPopup(provider).then((response) => {
       setUser(response.user);
 
       if (isMiamiEmail(response.user.email)) {
@@ -64,6 +64,7 @@ function useProvideAuth() {
   const signOut = () => {
     return auth.signOut().then(() => {
       setUser(false);
+      setAuthorized(false);
     });
   };
 
@@ -93,6 +94,7 @@ function useProvideAuth() {
         setUser(user);
       } else {
         setUser(false);
+        setAuthorized(false);
       }
     });
 
