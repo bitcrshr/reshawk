@@ -1,11 +1,16 @@
 import React from "react";
 
 import { onLoginClick } from "./login.utils";
+import { PageContainer, LoginContainer } from "./login.styles";
+
+import GoogleSignInButton from "react-google-button";
 
 const LoginPage = () => (
-  <div>
-    <button onClick={onLoginClick}>Sign In With Google</button>
-  </div>
+  <PageContainer>
+    <LoginContainer>
+      <GoogleSignInButton type="light" onClick={onLoginClick} />
+    </LoginContainer>
+  </PageContainer>
 );
 
 export default LoginPage;
