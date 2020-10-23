@@ -1,6 +1,6 @@
 import * as firebase from "firebase";
 
-import React, {useState, useEffect, useContext, createContext } from 'react';
+import React, { useState, useEffect, useContext, createContext } from "react";
 
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 // safe to expose publicly
@@ -43,25 +43,44 @@ export const useAuth = () => {
 // Provider hook that creates auth object and handles state
 function useProvideAuth() {
   const [user, setUser] = useState(null);
-  
+  const [authorized, setAuthorized] = useState(null);
+
   // Wrap any Firebase methods we want to use making sure ...
   // ... to save the user to state.
   const signInWithGoogle = () => {
-    return auth
-      .signInWithPopup(provider)
-      .then(response => {
-        setUser(response.user);
-        return response.user;
-      });
+    auth.signInWithPopup(provider).then((response) => {
+      setUser(response.user);
+
+      if (isMiamiEmail(response.user.email)) {
+        isAuthorizedUser(response.user.email).then((isAuthorized) => {
+          setAuthorized(isAuthorized);
+        });
+      }
+
+      return response.user;
+    });
   };
 
-
   const signOut = () => {
-    return auth
-      .signOut()
-      .then(() => {
-        setUser(false);
-      });
+    return auth.signOut().then(() => {
+      setUser(false);
+    });
+  };
+
+  const isMiamiEmail = (email) => {
+    return (
+      email.substring(email.length - 12, email.length).toLowerCase() ===
+      "@miamioh.edu"
+    );
+  };
+
+  const isAuthorizedUser = async (email) => {
+    const snapshot = await db
+      .collection("authorized-users")
+      .where("email", "==", email)
+      .get();
+
+    return !snapshot.empty;
   };
 
   // Subscribe to user on mount
@@ -69,7 +88,7 @@ function useProvideAuth() {
   // ... component that utilizes this hook to re-render with the ...
   // ... latest auth object.
   useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         setUser(user);
       } else {
@@ -80,11 +99,14 @@ function useProvideAuth() {
     // Cleanup subscription on unmount
     return () => unsubscribe();
   }, []);
-  
+
   // Return the user object and auth methods
   return {
     user,
+    authorized,
     signInWithGoogle,
-    signOut
+    signOut,
+    isMiamiEmail,
+    isAuthorizedUser,
   };
 }
