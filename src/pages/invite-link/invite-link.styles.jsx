@@ -1,10 +1,9 @@
 import styled from "styled-components";
 
-export const PageContainer = styled.div`
+export const PageContainer = styled.div.attrs((props) => ({
+  className: "w3-display-container w3-row",
+}))`
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 
   background: #b993d6; /* fallback for old browsers */
   background: -webkit-linear-gradient(
@@ -19,12 +18,17 @@ export const PageContainer = styled.div`
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 `;
 
-export const CodeContainer = styled.div`
+export const CodeContainer = styled.div.attrs((props) => ({
+  className: "w3-container w3-round  w3-display-middle w3-mobile",
+}))`
   min-height: 200px;
-  width: 40vh;
   background-color: white;
-  border-radius: 6px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
+
+export const ContainerText = styled.p.attrs((props) => ({
+  className: "w3-mobile",
+}))``;
+
+export const BackButton = styled.button.attrs((props) => ({
+  className: "w3-button w3-indigo w3-mobile",
+}))``;

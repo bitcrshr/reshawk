@@ -15,7 +15,11 @@ const LoginPage = () => {
   return (
     <PageContainer>
       <LoginContainer>
-        <GoogleSignInButton type="light" onClick={auth.signInWithGoogle} />
+        <GoogleSignInButton
+          type="light"
+          onClick={auth.signInWithGoogle}
+          className="w3-display-middle"
+        />
       </LoginContainer>
     </PageContainer>
   );
