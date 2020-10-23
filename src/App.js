@@ -3,11 +3,13 @@ import "./App.css";
 
 import LoginPage from "./pages/login/login.page";
 
+import { ProvideAuth } from './firebase/firebase.util';
+
 function App() {
   return (
-    <div>
+    <ProvideAuth>
       <LoginPage></LoginPage>
-    </div>
+    </ProvideAuth>
   );
 }
 
