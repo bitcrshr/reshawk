@@ -48,17 +48,20 @@ function useProvideAuth() {
   // Wrap any Firebase methods we want to use making sure ...
   // ... to save the user to state.
   const signInWithGoogle = () => {
-    return auth.signInWithPopup(provider).then((response) => {
-      setUser(response.user);
+    return auth
+      .signInWithPopup(provider)
+      .then((response) => {
+        setUser(response.user);
 
-      if (isMiamiEmail(response.user.email)) {
-        isAuthorizedUser(response.user.email).then((isAuthorized) => {
-          setAuthorized(isAuthorized);
-        });
-      }
+        if (isMiamiEmail(response.user.email)) {
+          isAuthorizedUser(response.user.email).then((isAuthorized) => {
+            setAuthorized(isAuthorized);
+          });
+        }
 
-      return response.user;
-    });
+        return response.user;
+      })
+      .catch((error) => console.log(error));
   };
 
   const signOut = () => {
