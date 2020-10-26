@@ -18,7 +18,7 @@ const firebaseConfig = {
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const provider = new firebase.auth.GoogleAuthProvider();
-const db = firebaseApp.firestore();
+export const db = firebaseApp.firestore();
 
 /////////////////////////////////////////
 
@@ -70,14 +70,15 @@ function useProvideAuth() {
           setState({
             user: response.user,
             isAuthorized: true,
-            dbUser: snapshot.docs[0].data(),
+            dbUser: { ...snapshot.docs[0].data(), id: snapshot.docs[0].id },
           });
         });
     });
   };
 
   const signOut = () => {
-    auth.signOut().then(() => setState(initialState));
+    setState(initialState);
+    auth.signOut();
   };
 
   useEffect(() => {
@@ -88,12 +89,16 @@ function useProvideAuth() {
       }
 
       //TODO need to persist dbUser so that we can update the state here from it
-      isAuthorized(user.email).then((authorized) => {
-        setState({
-          user: user,
-          isAuthorized: authorized,
+      db.collection("authorized-users")
+        .where("email", "==", user.email)
+        .get()
+        .then((snapshot) => {
+          setState({
+            user: user,
+            isAuthorized: !snapshot.empty,
+            dbUser: { ...snapshot.docs[0].data(), id: snapshot.docs[0].id },
+          });
         });
-      });
     });
 
     return () => unsubscribe();
