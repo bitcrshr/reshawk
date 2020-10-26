@@ -9,7 +9,7 @@ import InviteLinkPage from "./pages/invite-link/invite-link.page";
 function App() {
   const auth = useAuth();
 
-  return !auth.user ? <LoginPage /> : <InviteLinkPage />;
+  return auth.state.user ? <InviteLinkPage /> : <LoginPage />;
 }
 
 export default App;

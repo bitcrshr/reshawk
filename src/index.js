@@ -3,13 +3,13 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 
-import { ProvideAuth } from "./firebase/firebase.util";
+import { AuthProvider } from "./firebase/firebase.util";
 
 ReactDOM.render(
   <React.StrictMode>
-    <ProvideAuth>
+    <AuthProvider>
       <App />
-    </ProvideAuth>
+    </AuthProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

@@ -27,12 +27,10 @@ const InviteLinkPage = () => {
     </div>
   );
 
-  console.log(auth.user);
-
   return (
     <PageContainer>
       <CodeContainer>
-        {auth.authorized ? authorizedUI() : unauthorizedUI()}
+        {auth.state.isAuthorized ? authorizedUI() : unauthorizedUI()}
       </CodeContainer>
     </PageContainer>
   );

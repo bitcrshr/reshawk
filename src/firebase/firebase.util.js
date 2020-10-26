@@ -16,102 +16,93 @@ const firebaseConfig = {
 };
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
-
-export const auth = firebase.auth();
-
-var provider = new firebase.auth.GoogleAuthProvider();
-
-export const db = firebaseApp.firestore();
+const auth = firebase.auth();
+const provider = new firebase.auth.GoogleAuthProvider();
+const db = firebaseApp.firestore();
 
 /////////////////////////////////////////
 
-const authContext = createContext();
-
-// Provider component that wraps your app and makes auth object ...
-// ... available to any child component that calls useAuth().
-export function ProvideAuth({ children }) {
-  const auth = useProvideAuth();
-  return <authContext.Provider value={auth}>{children}</authContext.Provider>;
-}
-
-// Hook for child components to get the auth object ...
-// ... and re-render when it changes.
-export const useAuth = () => {
-  return useContext(authContext);
+const context = createContext();
+const initialState = {
+  user: null,
+  isAuthorized: null,
 };
 
-// Provider hook that creates auth object and handles state
+export function AuthProvider({ children }) {
+  const auth = useProvideAuth();
+  return <context.Provider value={auth}>{children}</context.Provider>;
+}
+
+export const useAuth = () => {
+  return useContext(context);
+};
+
 function useProvideAuth() {
-  const [user, setUser] = useState(null);
-  const [authorized, setAuthorized] = useState(null);
+  const [state, setState] = useState(initialState);
 
-  // Wrap any Firebase methods we want to use making sure ...
-  // ... to save the user to state.
-  const signInWithGoogle = () => {
-    return auth
-      .signInWithPopup(provider)
-      .then((response) => {
-        setUser(response.user);
+  const signIn = () => {
+    auth.signInWithPopup(provider).then((response) => {
+      if (!isMiamiEmail(response.user.email)) {
+        setState({
+          user: response.user,
+          isAuthorized: false,
+        });
 
-        if (isMiamiEmail(response.user.email)) {
-          isAuthorizedUser(response.user.email).then((isAuthorized) => {
-            setAuthorized(isAuthorized);
-          });
-        }
+        return;
+      }
 
-        return response.user;
-      })
-      .catch((error) => console.log(error));
+      isAuthorized(response.user.email).then((authorized) => {
+        setState({
+          user: response.user,
+          isAuthorized: authorized,
+        });
+      });
+    });
   };
 
   const signOut = () => {
-    return auth.signOut().then(() => {
-      setUser(false);
-      setAuthorized(false);
-    });
-  };
-
-  const isMiamiEmail = (email) => {
-    return (
-      email.substring(email.length - 12, email.length).toLowerCase() ===
-      "@miamioh.edu"
+    auth.signOut().then(() =>
+      setState({
+        user: null,
+        isAuthorized: null,
+      })
     );
   };
 
-  const isAuthorizedUser = async (email) => {
-    const snapshot = await db
-      .collection("authorized-users")
-      .where("email", "==", email)
-      .get();
-
-    return !snapshot.empty;
-  };
-
-  // Subscribe to user on mount
-  // Because this sets state in the callback it will cause any ...
-  // ... component that utilizes this hook to re-render with the ...
-  // ... latest auth object.
   useEffect(() => {
-    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        setUser(false);
-        setAuthorized(false);
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (!user) {
+        setState(initialState);
+        return;
       }
+
+      isAuthorized(user.email).then((authorized) => {
+        setState({
+          user: user,
+          isAuthorized: authorized,
+        });
+      });
     });
 
-    // Cleanup subscription on unmount
     return () => unsubscribe();
   }, []);
 
-  // Return the user object and auth methods
   return {
-    user,
-    authorized,
-    signInWithGoogle,
+    state,
+    signIn,
     signOut,
-    isMiamiEmail,
-    isAuthorizedUser,
   };
+}
+
+async function isAuthorized(email) {
+  const snapshot = await db
+    .collection("authorized-users")
+    .where("email", "==", email)
+    .get();
+
+  return !snapshot.empty;
+}
+
+function isMiamiEmail(email) {
+  return email.slice(email.length - 12) === "@miamioh.edu";
 }
