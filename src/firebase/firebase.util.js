@@ -26,6 +26,7 @@ const context = createContext();
 const initialState = {
   user: null,
   isAuthorized: null,
+  dbUser: null,
 };
 
 export function AuthProvider({ children }) {
@@ -46,27 +47,37 @@ function useProvideAuth() {
         setState({
           user: response.user,
           isAuthorized: false,
+          dbUser: null,
         });
 
         return;
       }
 
-      isAuthorized(response.user.email).then((authorized) => {
-        setState({
-          user: response.user,
-          isAuthorized: authorized,
+      db.collection("authorized-users")
+        .where("email", "==", response.user.email)
+        .limit(1)
+        .get()
+        .then((snapshot) => {
+          if (snapshot.empty) {
+            setState({
+              user: response.user.email,
+              isAuthorized: false,
+              dbUser: null,
+            });
+            return;
+          }
+
+          setState({
+            user: response.user,
+            isAuthorized: true,
+            dbUser: snapshot.docs[0].data(),
+          });
         });
-      });
     });
   };
 
   const signOut = () => {
-    auth.signOut().then(() =>
-      setState({
-        user: null,
-        isAuthorized: null,
-      })
-    );
+    auth.signOut().then(() => setState(initialState));
   };
 
   useEffect(() => {
@@ -76,6 +87,7 @@ function useProvideAuth() {
         return;
       }
 
+      //TODO need to persist dbUser so that we can update the state here from it
       isAuthorized(user.email).then((authorized) => {
         setState({
           user: user,

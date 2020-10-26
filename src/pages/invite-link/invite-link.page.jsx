@@ -11,6 +11,8 @@ import {
 const InviteLinkPage = () => {
   const auth = useAuth();
 
+  console.log(auth.state);
+
   const unauthorizedUI = () => (
     <div>
       <ContainerText>
