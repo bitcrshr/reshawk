@@ -19,7 +19,7 @@ export const PageContainer = styled.div.attrs((props) => ({
 `;
 
 export const CodeContainer = styled.div.attrs((props) => ({
-  className: "w3-container w3-round  w3-display-middle w3-mobile",
+  className: "w3-container w3-round w3-display-middle w3-mobile",
 }))`
   min-height: 200px;
   background-color: white;

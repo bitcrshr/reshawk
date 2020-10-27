@@ -19,7 +19,7 @@ export const PageContainer = styled.div.attrs((props) => ({
 `;
 
 export const LoginContainer = styled.div.attrs((props) => ({
-  className: "w3-display-container w3-display-middle w3-mobile w3-round",
+  className: "w3-display-middle w3-mobile w3-round",
 }))`
   min-height: 200px;
   min-width: 400px;

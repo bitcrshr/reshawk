@@ -35,11 +35,20 @@ const InviteLinkPage = () => {
   const authorizedUI = () => (
     <div>
       <ContainerText>Welcome! We've been expecting you.</ContainerText>
-      <BackButton onClick={auth.signOut}>Go Back</BackButton>
-      <form onSubmit={handleSubmit}>
-        <input type="text" onChange={handleChange} />
-        <button type="submit">Submit</button>
+
+      <form onSubmit={handleSubmit} className="w3-container">
+        <div className="w3-row">
+          <input
+            type="text"
+            onChange={handleChange}
+            className="w3-input w3-round w3-twothird"
+          />
+          <button type="submit" className="w3-button w3-indigo w3-third">
+            Submit
+          </button>
+        </div>
       </form>
+      <BackButton onClick={auth.signOut}>Go Back</BackButton>
     </div>
   );
 

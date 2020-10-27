@@ -96,7 +96,9 @@ function useProvideAuth() {
           setState({
             user: user,
             isAuthorized: !snapshot.empty,
-            dbUser: { ...snapshot.docs[0].data(), id: snapshot.docs[0].id },
+            dbUser: !snapshot.empty
+              ? { ...snapshot.docs[0].data(), id: snapshot.docs[0].id }
+              : null,
           });
         });
     });
@@ -109,15 +111,6 @@ function useProvideAuth() {
     signIn,
     signOut,
   };
-}
-
-async function isAuthorized(email) {
-  const snapshot = await db
-    .collection("authorized-users")
-    .where("email", "==", email)
-    .get();
-
-  return !snapshot.empty;
 }
 
 function isMiamiEmail(email) {

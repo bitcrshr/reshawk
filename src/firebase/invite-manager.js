@@ -5,6 +5,10 @@ export const generateInviteCode = () => {
 };
 
 export function verifyInviteCode(code, userID) {
+  if (!code) {
+    return;
+  }
+
   db.collection("authorized-users")
     .where("inviteCode", "==", code)
     .get()
