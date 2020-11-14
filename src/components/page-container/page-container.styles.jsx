@@ -1,9 +1,8 @@
 import styled from "styled-components";
 
-export const PageContainer = styled.div.attrs((props) => ({
-  className: "w3-display-container",
-}))`
+const PageContainer = styled.div`
   height: 100vh;
+  overflow: hidden;
 
   background: #b993d6; /* fallback for old browsers */
   background: -webkit-linear-gradient(
@@ -18,10 +17,4 @@ export const PageContainer = styled.div.attrs((props) => ({
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 `;
 
-export const LoginContainer = styled.div.attrs((props) => ({
-  className: "w3-display-middle w3-mobile w3-round",
-}))`
-  min-height: 200px;
-  min-width: 400px;
-  background-color: white;
-`;
+export default PageContainer;

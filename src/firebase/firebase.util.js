@@ -22,7 +22,7 @@ export const db = firebaseApp.firestore();
 
 /////////////////////////////////////////
 
-const context = createContext();
+export const context = createContext();
 const initialState = {
   user: null,
   isAuthorized: null,
@@ -42,6 +42,7 @@ function useProvideAuth() {
   const [state, setState] = useState(initialState);
 
   const signIn = () => {
+    console.table(auth.state);
     auth.signInWithPopup(provider).then((response) => {
       if (!isMiamiEmail(response.user.email)) {
         setState({
@@ -77,6 +78,7 @@ function useProvideAuth() {
   };
 
   const signOut = () => {
+    console.table(auth.state);
     setState(initialState);
     auth.signOut();
   };
