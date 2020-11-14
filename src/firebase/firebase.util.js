@@ -112,10 +112,63 @@ function useProvideAuth() {
     return () => unsubscribe();
   }, []);
 
+  const verifyInviteCode = async (code) => {
+    if (!code) {
+      setState({
+        ...state,
+        dbUser: null,
+      });
+      return false;
+    }
+
+    const inviteCodeSnap = await db.collection("invite-codes").doc(code).get();
+
+    if (!inviteCodeSnap.data()) {
+      setState({
+        ...state,
+        dbUser: null,
+      });
+
+      return false;
+    }
+
+    const inviteCodeOwnerSnap = await db
+      .collection("authorized-users")
+      .doc(inviteCodeSnap.data().assignedTo)
+      .get();
+
+    const newUserRef = await db.collection("authorized-users").add({
+      email: state.user.email,
+      hall: inviteCodeOwnerSnap.data().hall,
+      name: state.user.displayName,
+      role: inviteCodeSnap.data().forRole,
+    });
+
+    const newUser = (await newUserRef.get()).data();
+
+    const newCurrentUsers = !inviteCodeSnap.data().currentUsers
+      ? [newUserRef.id]
+      : [...inviteCodeSnap.data().currentUsers, newUserRef.id];
+
+    console.log(newCurrentUsers);
+
+    db.collection("invite-codes").doc(code).update({
+      currentUsers: newCurrentUsers,
+    });
+
+    setState({
+      ...state,
+      dbUser: newUser,
+    });
+
+    return true;
+  };
+
   return {
     state,
     signIn,
     signOut,
+    verifyInviteCode,
   };
 }
 

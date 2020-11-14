@@ -31,7 +31,9 @@ const App = () => {
       );
     else setAlert(null);
 
-    if (auth.state.isMiamiUser && !auth.state.dbUser) {
+    if (!auth.state.user) {
+      setShowModal(false);
+    } else if (auth.state.isMiamiUser && !auth.state.dbUser) {
       setShowModal(true);
     }
   }, [auth.state.user, auth.state.isMiamiUser, auth.state.dbUser]);
