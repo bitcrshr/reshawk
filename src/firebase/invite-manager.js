@@ -9,20 +9,15 @@ export function verifyInviteCode(code, userID) {
     return;
   }
 
-  db.collection("authorized-users")
-    .where("inviteCode", "==", code)
+  db.collection("invite-codes")
+    .doc(code)
     .get()
-    .then((snapshot) => {
-      if (snapshot.empty) {
+    .then((snap) => {
+      if (snap.empty) {
         console.log("invalid code");
         return;
       }
 
-      if (snapshot.docs[0].data().invitedUsers.includes(userID.trim())) {
-        console.log("invite code verified");
-      } else {
-        console.log("invalid code");
-      }
-    })
-    .catch((error) => console.log(error));
+      console.log("valid code");
+    });
 }

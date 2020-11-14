@@ -25,7 +25,7 @@ export const db = firebaseApp.firestore();
 export const context = createContext();
 const initialState = {
   user: null,
-  isAuthorized: null,
+  isMiamiUser: null,
   dbUser: null,
 };
 
@@ -47,12 +47,17 @@ function useProvideAuth() {
       if (!isMiamiEmail(response.user.email)) {
         setState({
           user: response.user,
-          isAuthorized: false,
+          isMiamiUser: false,
           dbUser: null,
         });
 
         return;
       }
+
+      setState({
+        ...state,
+        isMiamiUser: true,
+      });
 
       db.collection("authorized-users")
         .where("email", "==", response.user.email)
@@ -62,7 +67,7 @@ function useProvideAuth() {
           if (snapshot.empty) {
             setState({
               user: response.user.email,
-              isAuthorized: false,
+              isMiamiUser: true,
               dbUser: null,
             });
             return;
@@ -70,7 +75,7 @@ function useProvideAuth() {
 
           setState({
             user: response.user,
-            isAuthorized: true,
+            isMiamiUser: true,
             dbUser: { ...snapshot.docs[0].data(), id: snapshot.docs[0].id },
           });
         });
@@ -90,14 +95,13 @@ function useProvideAuth() {
         return;
       }
 
-      //TODO need to persist dbUser so that we can update the state here from it
       db.collection("authorized-users")
         .where("email", "==", user.email)
         .get()
         .then((snapshot) => {
           setState({
             user: user,
-            isAuthorized: !snapshot.empty,
+            isMiamiUser: isMiamiEmail(user.email),
             dbUser: !snapshot.empty
               ? { ...snapshot.docs[0].data(), id: snapshot.docs[0].id }
               : null,
