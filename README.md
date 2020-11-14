@@ -1,5 +1,23 @@
-A software solution for students living in residence halls and the staff that support them. 
+# Welcome to reshawk 👋
 
-## Getting Started
+> A web solution for college students in residence halls.
 
-Run `git clone https://github.com/photonfighterlabs/reshawk.git` to clone the repository. Once that is done, navigate to the project directory (`/reshawk`) and run `npm install` to install project dependencies!
+## Get Up and Running
+
+First things first, clone the repository:
+
+```sh
+git clone https://github.com/photonfighterlabs/reshawk.git
+```
+
+Then, navigate to `reshawk` and install all the dependencies (this may take a while):
+
+```sh
+npm i
+```
+
+Finally, to start the development server, run:
+
+```sh
+npm start
+```
