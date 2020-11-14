@@ -9,14 +9,16 @@ import { verifyInviteCode } from "../../firebase/invite-manager";
 
 const InviteCodeModal = ({ showModal, setShowModal }) => {
   const auth = useAuth();
+  const [inviteCode, setInviteCode] = useState(null);
 
   const handleModalCancel = () => {
     auth.signOut();
     setShowModal(false);
   };
 
-  const handleSubmit = () => {
-    verifyInviteCode();
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    verifyInviteCode(inviteCode, auth.state.user);
   };
 
   return (
@@ -34,8 +36,12 @@ const InviteCodeModal = ({ showModal, setShowModal }) => {
           Welcome to reshawk! We've been expecting you. All you need to do to
           get started is enter the invite code you were sent!
         </p>
-        <Form id="invite-form" onSubmit={handleSubmit}>
-          <Form.Control type="text" placeholder="Invite Code" />
+        <Form id="invite-form" onSubmit={(event) => handleSubmit(event)}>
+          <Form.Control
+            type="text"
+            placeholder="Invite Code"
+            onChange={(event) => setInviteCode(event.target.value)}
+          />
         </Form>
       </Modal.Body>
       <Modal.Footer>
