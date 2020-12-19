@@ -1,8 +1,19 @@
 import firebase from "firebase/app";
 import "firebase/auth";
-import React, { useState, useEffect, useContext, createContext } from "react";
+import React, { useState, useContext, createContext } from "react";
 
 import APIManager from "../utils/api-manager";
+
+firebase.initializeApp({
+  apiKey: "AIzaSyCrxI0frxlzVZBqg85TTo7xkbyjyVRBV4E",
+  authDomain: "reshawk-app.firebaseapp.com",
+  databaseURL: "https://reshawk-app.firebaseio.com",
+  projectId: "reshawk-app",
+  storageBucket: "reshawk-app.appspot.com",
+  messagingSenderId: "725106275678",
+  appId: "1:725106275678:web:87a740653ae594e92fcbcf",
+  measurementId: "G-TC0203ZNT3"
+})
 
 export const AuthContext = createContext(null);
 

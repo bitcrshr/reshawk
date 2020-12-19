@@ -6,10 +6,10 @@ export default function CustomNavbar() {
   return (
     <Navbar bg="light" expand="lg">
       <Navbar.Brand href="/">ResHawk</Navbar.Brand>
-      <Navbar.Toggle aria-control="basic-navbar-nav" />
+      <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="mr-auto">
-          <Nav.Link href="/login" active={location.pathname === "login"}>
+          <Nav.Link href="/login" >
             Login
           </Nav.Link>
         </Nav>
