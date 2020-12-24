@@ -47,7 +47,7 @@ export default function Dashboard() {
                 </Card>
               </Col>
             </Row>
-            <Row className="flex-grow-1 p-0">
+            <Row className="flex-grow-1 ">
               <Col lg={12} className="d-flex flex-column">
                 <Card className="db-bottomcard flex-grow-1 mx-0">
                   <h1>bottom card</h1>
