@@ -1,6 +1,9 @@
-# Welcome to reshawk 👋
+# Welcome to reshawk 👋 [ABANDONED]
 
 > A web solution for college students in residence halls.
+
+## This project has been abandoned. :(
+After doing a feasibility analysis, I found that there is vast competition in this sector and I could not hope to compete as a solo developer. However, it was a great learning experience for using React as well as Express, so I decided to keep it here.
 
 ## Get Up and Running
 
